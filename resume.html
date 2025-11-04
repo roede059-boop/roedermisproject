@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ellie Roeder - Resume</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Resume-specific styles */
+        .resume-section {
+            margin-bottom: 2rem;
+            animation: fadeUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        .resume-section:nth-child(2) { animation-delay: 0.1s; }
+        .resume-section:nth-child(3) { animation-delay: 0.2s; }
+        .resume-section:nth-child(4) { animation-delay: 0.3s; }
+        .resume-section:nth-child(5) { animation-delay: 0.4s; }
+        .resume-section:nth-child(6) { animation-delay: 0.5s; }
+        .resume-section:nth-child(7) { animation-delay: 0.6s; }
+        .resume-section:nth-child(8) { animation-delay: 0.7s; }
+
+        .resume-section h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .resume-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .resume-item h3 {
+            color: var(--text);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .resume-item h4 {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            font-weight: normal;
+            margin-bottom: 0.5rem;
+        }
+
+        .resume-item .date {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .resume-item ul {
+            list-style-position: inside;
+            margin-left: 1rem;
+        }
+
+        .resume-item li {
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .skill-category {
+            background: rgba(46, 125, 50, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .skill-category h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .download-button {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .download-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Menu -->
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="hobbies.html">Hobbies</a></li>
+            <li><a href="discover.html">Discover UMD</a></li>
+            <li><a href="resume.html" class="active">Resume</a></li>
+            <li><a href="career.html">Career</a></li>
+            <li><a href="game.html">Game</a></li>
+        </ul>
+    </nav>
+
+    <!-- Decorative Doodles -->
+    <div class="doodles" aria-hidden="true">
+        <svg class="doodle doodle-1" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c.65 0 1.18-.53 1.18-1.18 0-.35-.14-.66-.37-.9-.23-.24-.37-.55-.37-.9 0-.65.53-1.18 1.18-1.18h1.39c3.05 0 5.53-2.48 5.53-5.53C20.53 6.48 16.05 2 12 2z"/>
+        </svg>
+        <svg class="doodle doodle-2" viewBox="0 0 24 24">
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+        <svg class="doodle doodle-3" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+    </div>
+
+    <main class="container">
+        <div class="glass-card">
+            <!-- Personal Information -->
+            <section class="resume-section">
+                <h1>Ellie Roeder</h1>
+                <div class="contact-info">
+                    <p>📧 ellieroeder.05@gmail.com</p>
+                    <p>📱 612-518-1474</p>
+                    <p>📍 10563 104th Ave N, Maple Grove, MN, 55369</p>
+                    <p>🔗 www.linkedin.com/in/ellie-roeder17</p>
+                </div>
+            </section>
+
+            <!-- Work Experience -->
+            <section class="resume-section">
+                <h2>Work Experience</h2>
+                <div class="resume-item">
+                    <h3>Dance Teacher</h3>
+                    <h4>Rince Nua Irish Dance</h4>
+                    <p class="date">December 2020 - August 2021</p>
+                    <ul>
+                        <li>Worked with kids aging from 3 to 11.</li>
+                        <li>Came up with activities and special ways to learn.</li>
+                        <li>Made choreography to perform at multiple shows.</li>
+                        <li>Walked parents through questions and information.</li>
+                    </ul>
+                </div>
+                <div class="resume-item">
+                    <h3>Front Desk Associate</h3>
+                    <h4>Massage Envy</h4>
+                    <p class="date">June 2024 - August 2024</p>
+                    <ul>
+                        <li>Answered customer questions about memberships.</li>
+                        <li>Answered phones and made schedules online.</li>
+                        <li>Got to know customer concerns and came up with solutions.</li>
+                    </ul>
+                </div>
+                <div class="resume-item">
+                    <h3>Brand Associate</h3>
+                    <h4>Old Navy</h4>
+                    <p class="date">April 2023 - August 2025</p>
+                    <ul>
+                        <li>Worked with customers and coworkers with different backgrounds.</li>
+                        <li>Organized styles and designed mannequins.</li>
+                        <li>Helped with questions regarding the store.</li>
+                        <li>Applied customer service skills at the cash register.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Volunteer Experience -->
+            <section class="resume-section">
+                <h2>Volunteer Experience</h2>
+                <div class="resume-item">
+                    <h3>Food Packer</h3>
+                    <h4>Feed my Starving Children</h4>
+                    <p class="date">20 hours, 2016 - 2018</p>
+                    <ul>
+                        <li>Packed meals for needy children with my church.</li>
+                        <li>Worked on communication with others.</li>
+                    </ul>
+                </div>
+                <!-- Add more volunteer experience items here -->
+            </section>
+
+            <!-- Activities -->
+            <section class="resume-section">
+                <h2>Activities</h2>
+                <div class="resume-item">
+                    <h3>Irish Dance, Maple Grove</h3>
+                    <p class="date">Grade 11 - Grade 12</p>
+                    <p class="date">The O'Neill School of Irish Dance</p>
+                    <p class="date">Rince Nua Irish Dance - Grade 2 - Grade 10</p>
+                </div>
+                <div class="resume-item">
+                    <h3>Osseo Tennis Team, Osseo</h3>
+                    <p class="date">Grade 7 - Grade 12</p>
+                    <ul>
+                        <li>Lettered in Grades 11 and 12</li>
+                    </ul>
+                </div>
+                <div class="resume-item">
+                    <h3>Wind Ensemble, Osseo</h3>
+                    <p class="date">Grade 10 - Grade 11</p>
+                </div>
+            </section>
+
+            <!-- Education -->
+            <section class="resume-section">
+                <h2>Education</h2>
+                <div class="resume-item">
+                    <h3>University of Minnesota Duluth</h3>
+                    <h4>Communications Major, Business Administration Minor</h4>
+                    <p class="date">Graduation Date: May, 2027</p>
+                    <ul>
+                        <li>GPA: 3.713</li>
+                    </ul>
+                </div>
+                <div class="resume-item">
+                    <h3>Osseo Senior High</h3>
+                    <p class="date">Graduation Date: June, 2023</p>
+                    <ul>
+                        <li>GPA: 3.953</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Awards and Honors -->
+            <section class="resume-section">
+                <h2>Awards & Honors</h2>
+                <div class="resume-item">
+                    <ul>
+                        <li>A Honor Roll Grade 9 - Grade 12</li>
+                        <li>Math Scholar of the Year (nominated by teacher) Grade 10</li>
+                        <li>"Best Sportsmanship" award from Tennis Team Grade 11 and Grade 12</li>
+                        <li>Dean's Academic List YEAR ONE and YEAR TWO</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Skills -->
+            <section class="resume-section">
+                <h2>Skills</h2>
+                <div class="resume-item">
+                    <ul>
+                        <li>Good customer service skills</li>
+                        <li>Engaged kids into lessons</li>
+                        <li>Choreographer</li>
+                        <li>Good with technology, informational sheets, and videos</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Interests -->
+            <section class="resume-section">
+                <h2>Interests</h2>
+                <div class="resume-item">
+                    <ul>
+                        <li>Animals and Wildlife</li>
+                        <li>Painting</li>
+                        <li>Creative Writing</li>
+                        <li>Music</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Download Button -->
+            <a href="files/Ellie_Roeder_Resume.pdf" class="download-button" download>
+                📄 Download PDF Resume
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Ellie Roeder. All rights reserved.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMD Drop and Catch Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #7A0019 0%, #FFCC33 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .game-container {
+            position: relative;
+            width: 400px;
+            height: 600px;
+            background: linear-gradient(to bottom, #FFCC33 0%, #7A0019 100%);
+            border: 3px solid #7A0019;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(122,0,25,0.4);
+        }
+
+        .game-header {
+            background: rgba(122,0,25,0.9);
+            color: #FFCC33;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 20px;
+            background: rgba(255,204,51,0.9);
+            color: #7A0019;
+            font-weight: bold;
+        }
+
+        .game-area {
+            position: relative;
+            width: 100%;
+            height: calc(100% - 80px);
+            background: linear-gradient(to bottom, #FFF8DC 0%, #F5F5DC 100%);
+        }
+
+        .catcher {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 20px;
+            background: linear-gradient(45deg, #7A0019, #FFCC33);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(122,0,25,0.4);
+            transition: left 0.1s ease;
+        }
+
+        .falling-object {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            /* Drop shadow removed for cleaner look */
+            animation: fall linear;
+        }
+
+        .good-object {
+            /* UMD Bulldog image for good objects */
+            background: url('images/umd-bulldog.png') center center / contain no-repeat;
+            width: 50px;            /* match increased object size */
+            height: 50px;
+            border-radius: 0;       /* keep logo shape */
+            background-color: transparent;
+        }
+
+        .bad-object {
+            /* UMD Maryland flag ball for bad objects */
+            background: url('images/umd-maryland.png') center center / cover no-repeat;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: transparent;
+        }
+
+        .bonus-object {
+            /* Gold Bulldog image for bonus objects */
+            background: url('images/umd-bulldog-gold.png') center center / contain no-repeat;
+            width: 50px;            /* match increased object size */
+            height: 50px;
+            border-radius: 0;       /* keep logo shape */
+            background-color: transparent;
+            /* No extra animation here so it inherits the fall animation */
+        }
+
+        @keyframes fall {
+            from {
+                top: -30px;
+            }
+            to {
+                top: 100%;
+            }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        .game-over h2 {
+            margin-bottom: 20px;
+            color: #FFCC33;
+        }
+
+        .restart-btn {
+            background: linear-gradient(45deg, #7A0019, #FFCC33);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: transform 0.2s;
+        }
+
+        .restart-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .instructions {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(122,0,25,0.8);
+            color: #FFCC33;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            max-width: 200px;
+        }
+
+        .level-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,204,51,0.9);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            color: #7A0019;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            UMD Drop and Catch Game
+        </div>
+        
+        <div class="score-board">
+            <div>Score: <span id="score">0</span></div>
+            <div>Lives: <span id="lives">3</span></div>
+        </div>
+
+        
+
+        <div class="game-area" id="gameArea">
+            <div class="catcher" id="catcher"></div>
+        </div>
+
+        <div class="game-over" id="gameOver">
+            <h2>Game Over!</h2>
+            <p>Final Score: <span id="finalScore">0</span></p>
+            <p>Level Reached: <span id="finalLevel">1</span></p>
+            <button class="restart-btn" onclick="restartGame()">Play Again</button>
+        </div>
+    </div>
+
+    <div class="level-indicator">
+        Level: <span id="level">1</span>
+    </div>
+
+    <div class="instructions">
+        🎮 Use A/D or ←/→ to move<br>
+        🟢 Catch green objects (+10)<br>
+        🔴 Avoid red objects (-1 life)<br>
+        🟡 Catch gold for bonus (+50)
+    </div>
+
+    <script>
+        class DropCatchGame {
+            constructor() {
+                this.gameArea = document.getElementById('gameArea');
+                this.catcher = document.getElementById('catcher');
+                this.scoreElement = document.getElementById('score');
+                this.livesElement = document.getElementById('lives');
+                this.levelElement = document.getElementById('level');
+                this.gameOverElement = document.getElementById('gameOver');
+                this.finalScoreElement = document.getElementById('finalScore');
+                this.finalLevelElement = document.getElementById('finalLevel');
+
+                this.score = 0;
+                this.lives = 3;
+                this.level = 1;
+                this.gameRunning = false;
+                this.catcherPosition = 50; // percentage
+                this.fallingObjects = [];
+                this.gameSpeed = 2000; // milliseconds between drops
+                this.dropInterval = null;
+
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.startGame();
+            }
+
+            setupEventListeners() {
+                document.addEventListener('keydown', (e) => {
+                    if (!this.gameRunning) return;
+
+                    switch(e.key.toLowerCase()) {
+                        case 'a':
+                        case 'arrowleft':
+                            this.moveCatcher(-10);
+                            break;
+                        case 'd':
+                        case 'arrowright':
+                            this.moveCatcher(10);
+                            break;
+                    }
+                });
+
+                // Touch/mouse support for mobile
+                this.gameArea.addEventListener('click', (e) => {
+                    if (!this.gameRunning) return;
+                    
+                    const rect = this.gameArea.getBoundingClientRect();
+                    const clickX = e.clientX - rect.left;
+                    const clickPercentage = (clickX / rect.width) * 100;
+                    
+                    if (clickPercentage < this.catcherPosition) {
+                        this.moveCatcher(-20);
+                    } else {
+                        this.moveCatcher(20);
+                    }
+                });
+            }
+
+            moveCatcher(delta) {
+                this.catcherPosition = Math.max(0, Math.min(100, this.catcherPosition + delta));
+                this.catcher.style.left = this.catcherPosition + '%';
+            }
+
+            startGame() {
+                this.gameRunning = true;
+                this.score = 0;
+                this.lives = 3;
+                this.level = 1;
+                this.gameSpeed = 2000;
+                this.fallingObjects = [];
+                
+                this.updateDisplay();
+                this.gameOverElement.style.display = 'none';
+                
+                this.dropInterval = setInterval(() => {
+                    this.createFallingObject();
+                }, this.gameSpeed);
+
+                this.gameLoop();
+            }
+
+            createFallingObject() {
+                if (!this.gameRunning) return;
+
+                const object = document.createElement('div');
+                object.className = 'falling-object';
+                
+                // Random position
+                const leftPosition = Math.random() * 85 + 7.5; // 7.5% to 92.5%
+                object.style.left = leftPosition + '%';
+                
+                // Random object type
+                const objectType = Math.random();
+                let points = 0;
+                let isBad = false;
+                
+                if (objectType < 0.6) {
+                    // 60% chance for good object
+                    object.classList.add('good-object');
+                    points = 10;
+                } else if (objectType < 0.9) {
+                    // 30% chance for bad object
+                    object.classList.add('bad-object');
+                    isBad = true;
+                } else {
+                    // 10% chance for bonus object
+                    object.classList.add('bonus-object');
+                    points = 50;
+                }
+
+                // Random fall speed
+                const fallSpeed = Math.random() * 2 + 1; // 1-3 seconds
+                object.style.animationDuration = fallSpeed + 's';
+
+                this.gameArea.appendChild(object);
+                
+                this.fallingObjects.push({
+                    element: object,
+                    left: leftPosition,
+                    points: points,
+                    isBad: isBad,
+                    caught: false
+                });
+
+                // Remove object after animation
+                setTimeout(() => {
+                    if (object.parentNode) {
+                        this.removeObject(object, false);
+                    }
+                }, fallSpeed * 1000);
+            }
+
+            removeObject(objectElement, wasCaught) {
+                const objectIndex = this.fallingObjects.findIndex(obj => obj.element === objectElement);
+                if (objectIndex !== -1) {
+                    const object = this.fallingObjects[objectIndex];
+                    
+                    if (wasCaught) {
+                        this.score += object.points;
+                        this.updateDisplay();
+                        
+                        // Check for level up
+                        if (this.score > 0 && this.score % 100 === 0) {
+                            this.levelUp();
+                        }
+                    } else if (object.isBad) {
+                        // Bad object missed - no penalty
+                    } else {
+                        // Good object missed - lose life
+                        this.lives--;
+                        this.updateDisplay();
+                        
+                        if (this.lives <= 0) {
+                            this.gameOver();
+                        }
+                    }
+                    
+                    this.fallingObjects.splice(objectIndex, 1);
+                }
+                
+                if (objectElement.parentNode) {
+                    objectElement.remove();
+                }
+            }
+
+            levelUp() {
+                this.level++;
+                this.gameSpeed = Math.max(500, this.gameSpeed - 200); // Faster drops
+                
+                // Clear current interval and set new one
+                clearInterval(this.dropInterval);
+                this.dropInterval = setInterval(() => {
+                    this.createFallingObject();
+                }, this.gameSpeed);
+                
+                this.updateDisplay();
+                
+                // Visual feedback for level up
+                this.showLevelUpEffect();
+            }
+
+            showLevelUpEffect() {
+                const effect = document.createElement('div');
+                effect.style.position = 'absolute';
+                effect.style.top = '50%';
+                effect.style.left = '50%';
+                effect.style.transform = 'translate(-50%, -50%)';
+                effect.style.color = '#FFD700';
+                effect.style.fontSize = '24px';
+                effect.style.fontWeight = 'bold';
+                effect.style.pointerEvents = 'none';
+                effect.style.zIndex = '1000';
+                effect.textContent = `Level ${this.level}!`;
+                
+                this.gameArea.appendChild(effect);
+                
+                setTimeout(() => {
+                    effect.remove();
+                }, 2000);
+            }
+
+            gameOver() {
+                this.gameRunning = false;
+                clearInterval(this.dropInterval);
+                
+                // Clear all falling objects
+                this.fallingObjects.forEach(obj => {
+                    if (obj.element.parentNode) {
+                        obj.element.remove();
+                    }
+                });
+                this.fallingObjects = [];
+                
+                this.finalScoreElement.textContent = this.score;
+                this.finalLevelElement.textContent = this.level;
+                this.gameOverElement.style.display = 'block';
+            }
+
+            updateDisplay() {
+                this.scoreElement.textContent = this.score;
+                this.livesElement.textContent = this.lives;
+                this.levelElement.textContent = this.level;
+            }
+
+            gameLoop() {
+                if (!this.gameRunning) return;
+
+                // Check collisions
+                this.fallingObjects.forEach(obj => {
+                    if (obj.caught) return;
+
+                    const objectRect = obj.element.getBoundingClientRect();
+                    const catcherRect = this.catcher.getBoundingClientRect();
+                    
+                    // Check if object is near the catcher
+                    if (objectRect.bottom >= catcherRect.top && 
+                        objectRect.top <= catcherRect.bottom &&
+                        objectRect.left < catcherRect.right && 
+                        objectRect.right > catcherRect.left) {
+                        
+                        obj.caught = true;
+                        this.removeObject(obj.element, true);
+                    }
+                });
+
+                requestAnimationFrame(() => this.gameLoop());
+            }
+        }
+
+        // Global functions
+        function restartGame() {
+            game.startGame();
+        }
+
+        // Initialize game when page loads
+        let game;
+        window.addEventListener('load', () => {
+            game = new DropCatchGame();
+        });
+    </script>
+</body>
+</html>
