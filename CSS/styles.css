@@ -231,6 +231,49 @@ footer {
     }
 }
 
+/* Hobbies Section Styles */
+.hobbies-container {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.hobby-item {
+    text-align: center;
+    animation: fadeUp 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+.hobby-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.hobby-image {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    margin-bottom: 1rem;
+}
+
+.hobby-image:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+.hobby-description {
+    color: var(--text);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 300px;
+    margin: 1rem auto;
+    padding: 0.5rem;
+}
+
 /* Print Styles */
 @media print {
     .glass-card {
