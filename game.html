@@ -177,6 +177,36 @@
             font-weight: bold;
             color: #7A0019;
         }
+
+        .music-control {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(122,0,25,0.9);
+            color: #FFCC33;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .music-control:hover {
+            background: rgba(255,204,51,0.9);
+            color: #7A0019;
+            transform: scale(1.05);
+        }
+
+        .music-control.playing {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
     </style>
 </head>
 <body>
@@ -215,7 +245,141 @@
         🟡 Catch gold for bonus (+50)
     </div>
 
+    <button class="music-control" id="musicControl" onclick="toggleMusic()">
+        🎵 Music: Off
+    </button>
+
     <script>
+        class MusicGenerator {
+            constructor() {
+                this.audioContext = null;
+                this.isPlaying = false;
+                this.oscillators = [];
+                this.gainNodes = [];
+                this.intervals = [];
+                this.isInitialized = false;
+            }
+
+            init() {
+                if (this.isInitialized) return;
+                
+                try {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    this.isInitialized = true;
+                } catch (e) {
+                    console.log('Web Audio API not supported');
+                }
+            }
+
+            start() {
+                if (!this.isInitialized) this.init();
+                if (!this.audioContext || this.isPlaying) return;
+
+                this.isPlaying = true;
+                
+                // Create multiple oscillators for a richer sound
+                const frequencies = [261.63, 329.63, 392.00, 523.25]; // C, E, G, C
+                
+                frequencies.forEach((freq, index) => {
+                    setTimeout(() => {
+                        if (!this.isPlaying) return;
+                        
+                        const oscillator = this.audioContext.createOscillator();
+                        const gainNode = this.audioContext.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(this.audioContext.destination);
+                        
+                        oscillator.frequency.setValueAtTime(freq, this.audioContext.currentTime);
+                        oscillator.type = index % 2 === 0 ? 'sine' : 'triangle';
+                        
+                        gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+                        gainNode.gain.linearRampToValueAtTime(0.05, this.audioContext.currentTime + 0.5);
+                        gainNode.gain.linearRampToValueAtTime(0.02, this.audioContext.currentTime + 1.5);
+                        
+                        oscillator.start();
+                        
+                        this.oscillators.push(oscillator);
+                        this.gainNodes.push(gainNode);
+                        
+                        // Schedule frequency changes
+                        this.scheduleFrequencyChange(oscillator, freq, index);
+                        
+                    }, index * 200);
+                });
+
+                // Add bass line
+                setTimeout(() => {
+                    if (!this.isPlaying) return;
+                    
+                    const bassOsc = this.audioContext.createOscillator();
+                    const bassGain = this.audioContext.createGain();
+                    
+                    bassOsc.connect(bassGain);
+                    bassGain.connect(this.audioContext.destination);
+                    
+                    bassOsc.frequency.setValueAtTime(130.81, this.audioContext.currentTime); // C3
+                    bassOsc.type = 'sawtooth';
+                    
+                    bassGain.gain.setValueAtTime(0.03, this.audioContext.currentTime);
+                    
+                    bassOsc.start();
+                    
+                    this.oscillators.push(bassOsc);
+                    this.gainNodes.push(bassGain);
+                }, 1000);
+            }
+
+            scheduleFrequencyChange(oscillator, baseFreq, index) {
+                if (!this.isPlaying) return;
+                
+                const interval = setInterval(() => {
+                    if (!this.isPlaying) {
+                        clearInterval(interval);
+                        return;
+                    }
+                    
+                    // Change to related frequencies
+                    const notePattern = [0, 4, 7, 12, 7, 4, 0, -5]; // Major scale pattern
+                    const patternIndex = Math.floor(Math.random() * notePattern.length);
+                    const semitoneOffset = notePattern[patternIndex];
+                    const newFreq = baseFreq * Math.pow(2, semitoneOffset / 12);
+                    
+                    oscillator.frequency.setValueAtTime(newFreq, this.audioContext.currentTime);
+                }, 1000 + Math.random() * 2000);
+                
+                this.intervals.push(interval);
+            }
+
+            stop() {
+                this.isPlaying = false;
+                
+                // Stop all oscillators
+                this.oscillators.forEach(osc => {
+                    try {
+                        osc.stop();
+                    } catch (e) {
+                        // Oscillator might already be stopped
+                    }
+                });
+                
+                // Clear all intervals
+                this.intervals.forEach(interval => clearInterval(interval));
+                
+                this.oscillators = [];
+                this.gainNodes = [];
+                this.intervals = [];
+            }
+
+            toggle() {
+                if (this.isPlaying) {
+                    this.stop();
+                } else {
+                    this.start();
+                }
+            }
+        }
+
         class DropCatchGame {
             constructor() {
                 this.gameArea = document.getElementById('gameArea');
@@ -226,6 +390,7 @@
                 this.gameOverElement = document.getElementById('gameOver');
                 this.finalScoreElement = document.getElementById('finalScore');
                 this.finalLevelElement = document.getElementById('finalLevel');
+                this.musicControl = document.getElementById('musicControl');
 
                 this.score = 0;
                 this.lives = 3;
@@ -235,6 +400,9 @@
                 this.fallingObjects = [];
                 this.gameSpeed = 2000; // milliseconds between drops
                 this.dropInterval = null;
+
+                // Initialize music generator
+                this.musicGenerator = new MusicGenerator();
 
                 this.init();
             }
@@ -356,12 +524,23 @@
                     const object = this.fallingObjects[objectIndex];
                     
                     if (wasCaught) {
-                        this.score += object.points;
-                        this.updateDisplay();
-                        
-                        // Check for level up
-                        if (this.score > 0 && this.score % 100 === 0) {
-                            this.levelUp();
+                        if (object.isBad) {
+                            // Bad object caught - lose a life
+                            this.lives--;
+                            this.updateDisplay();
+                            
+                            if (this.lives <= 0) {
+                                this.gameOver();
+                            }
+                        } else {
+                            // Good or bonus object caught - add points
+                            this.score += object.points;
+                            this.updateDisplay();
+                            
+                            // Check for level up
+                            if (this.score > 0 && this.score % 100 === 0) {
+                                this.levelUp();
+                            }
                         }
                     } else if (object.isBad) {
                         // Bad object missed - no penalty
@@ -470,6 +649,19 @@
         // Global functions
         function restartGame() {
             game.startGame();
+        }
+
+        function toggleMusic() {
+            game.musicGenerator.toggle();
+            const button = document.getElementById('musicControl');
+            
+            if (game.musicGenerator.isPlaying) {
+                button.textContent = '🎵 Music: On';
+                button.classList.add('playing');
+            } else {
+                button.textContent = '🎵 Music: Off';
+                button.classList.remove('playing');
+            }
         }
 
         // Initialize game when page loads

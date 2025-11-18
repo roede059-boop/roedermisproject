@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Welcome to my professional website">
+    <title>Welcome to my Website!</title>
+    <style>
+        /* SVG Doodle Definitions */
+        .doodles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .doodle {
+            position: absolute;
+            opacity: 0.15;
+            fill: var(--primary);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .doodle:nth-child(2n) {
+            animation-delay: -2s;
+        }
+
+        .doodle:nth-child(3n) {
+            animation-delay: -4s;
+        }
+
+        .doodle-1 { top: 15%; left: 15%; width: 50px; }
+        .doodle-2 { top: 25%; right: 18%; width: 40px; }
+        .doodle-3 { bottom: 20%; left: 20%; width: 45px; }
+        .doodle-4 { bottom: 15%; right: 15%; width: 35px; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        /* Modern CSS Reset and Variables */
+        :root {
+            --primary: #2e7d32;
+            --primary-dark: #1b5e20;
+            --bg-gradient: linear-gradient(135deg, #e8f5e9 0%, #fff9c4 100%);
+            --text: #1b5e20;
+            --text-light: #33691e;
+            --accent: #e3f2fd;
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --shadow-sm: 0 1px 3px rgba(46,125,50,0.12);
+            --shadow-lg: 0 20px 25px -5px rgba(46,125,50,0.1), 0 10px 10px -5px rgba(46,125,50,0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --blur: blur(16px) saturate(160%);
+        }
+
+        /* Modern CSS Reset */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Base Styles */
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 1rem;
+            overflow-x: hidden;
+        }
+
+        /* Main Content Styles */
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* Glass Card Effect */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(0);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Typography */
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, #4caf50 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: fadeUp 0.8s ease-out forwards;
+        }
+
+        .subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            animation: fadeUp 0.8s ease-out 0.2s forwards;
+            opacity: 0;
+        }
+
+        /* Button Styles */
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            background: var(--primary);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            animation: fadeUp 0.8s ease-out 0.4s forwards;
+            opacity: 0;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Decorative Elements */
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #81c784 0%, #4caf50 100%);
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            top: -150px;
+            right: -150px;
+        }
+
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            bottom: -100px;
+            left: -100px;
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .glass-card {
+                padding: 2rem;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .glass-card {
+                box-shadow: none;
+            }
+            body {
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative Doodles -->
+    <div class="doodles" aria-hidden="true">
+        <!-- Spiral Doodle -->
+        <svg class="doodle doodle-1" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c.65 0 1.18-.53 1.18-1.18 0-.35-.14-.66-.37-.9-.23-.24-.37-.55-.37-.9 0-.65.53-1.18 1.18-1.18h1.39c3.05 0 5.53-2.48 5.53-5.53C20.53 6.48 16.05 2 12 2z"/>
+        </svg>
+        <!-- Star Doodle -->
+        <svg class="doodle doodle-2" viewBox="0 0 24 24">
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+        <!-- Heart Doodle -->
+        <svg class="doodle doodle-3" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <!-- Flower Doodle -->
+        <svg class="doodle doodle-4" viewBox="0 0 24 24">
+            <path d="M12 22c4.97 0 9-4.03 9-9-4.97 0-9 4.03-9 9zM5.6 10.25c0 1.38 1.12 2.5 2.5 2.5.53 0 1.01-.16 1.42-.44l-.02.19c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5l-.02-.19c.4.28.89.44 1.42.44 1.38 0 2.5-1.12 2.5-2.5 0-1-.59-1.85-1.43-2.25.84-.4 1.43-1.25 1.43-2.25 0-1.38-1.12-2.5-2.5-2.5-.53 0-1.01.16-1.42.44l.02-.19C14.5 2.12 13.38 1 12 1S9.5 2.12 9.5 3.5l.02.19c-.4-.28-.89-.44-1.42-.44-1.38 0-2.5 1.12-2.5 2.5 0 1 .59 1.85 1.43 2.25-.84.4-1.43 1.25-1.43 2.25zM12 5.5c1.38 0 2.5 1.12 2.5 2.5s-1.12 2.5-2.5 2.5S9.5 9.38 9.5 8s1.12-2.5 2.5-2.5z"/>
+        </svg>
+    </div>
+    <main class="container">
+        <div class="glass-card">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <h1>Welcome to my Website!</h1>
+            <p class="subtitle">
+                Experience a blend of modern design and smooth interactions. 
+                This space showcases professional expertise through clean, 
+                accessible, and performant web development.
+            </p>
+            <a href="#" class="cta-button">Explore More</a>
+        </div>
+    </main>
+</body>
+</html>

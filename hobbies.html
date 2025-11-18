@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Page Title</title>
-    <link rel="stylesheet" href="css/style.css">
+    <meta name="description" content="My Hobbies and Interests">
+    <title>Hobbies - Ellie Roeder</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <!-- Navigation Menu (same on all pages) -->
-    <nav>
+    <!-- Navigation Menu -->
+    <nav class="main-nav">
         <ul>
             <li><a href="index.html">Home</a></li>
-            <li><a href="hobbies.html">Hobbies</a></li>
+            <li><a href="hobbies.html" class="active">Hobbies</a></li>
             <li><a href="discover.html">Discover UMD</a></li>
             <li><a href="resume.html">Resume</a></li>
             <li><a href="career.html">Career</a></li>
@@ -19,14 +20,73 @@
         </ul>
     </nav>
 
-    <!-- Your page content goes here -->
-    <main>
-        <!-- Page-specific content -->
+    <!-- Decorative Doodles -->
+    <div class="doodles" aria-hidden="true">
+        <svg class="doodle doodle-1" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c.65 0 1.18-.53 1.18-1.18 0-.35-.14-.66-.37-.9-.23-.24-.37-.55-.37-.9 0-.65.53-1.18 1.18-1.18h1.39c3.05 0 5.53-2.48 5.53-5.53C20.53 6.48 16.05 2 12 2z"/>
+        </svg>
+        <svg class="doodle doodle-2" viewBox="0 0 24 24">
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+        <svg class="doodle doodle-3" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <svg class="doodle doodle-4" viewBox="0 0 24 24">
+            <path d="M12 22c4.97 0 9-4.03 9-9-4.97 0-9 4.03-9 9zM5.6 10.25c0 1.38 1.12 2.5 2.5 2.5.53 0 1.01-.16 1.42-.44l-.02.19c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5l-.02-.19c.4.28.89.44 1.42.44 1.38 0 2.5-1.12 2.5-2.5 0-1-.59-1.85-1.43-2.25.84-.4 1.43-1.25 1.43-2.25 0-1.38-1.12-2.5-2.5-2.5-.53 0-1.01.16-1.42.44l.02-.19C14.5 2.12 13.38 1 12 1S9.5 2.12 9.5 3.5l.02.19c-.4-.28-.89-.44-1.42-.44-1.38 0-2.5 1.12-2.5 2.5 0 1 .59 1.85 1.43 2.25-.84.4-1.43 1.25-1.43 2.25zM12 5.5c1.38 0 2.5 1.12 2.5 2.5s-1.12 2.5-2.5 2.5S9.5 9.38 9.5 8s1.12-2.5 2.5-2.5z"/>
+        </svg>
+    </div>
+
+    <main class="container">
+        <div class="glass-card">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <h1>My Hobbies</h1>
+            <p class="subtitle">These hobbies are important to me because they make up who I am!</p>
+            
+            <!-- Crafting Section -->
+            <section style="margin-bottom: 3rem; margin-top: 2rem; opacity: 1; visibility: visible; display: block;">
+                <h2 style="font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; color: #2e7d32; margin-bottom: 1rem;">Crafting</h2>
+                <p style="margin-bottom: 1rem; line-height: 1.8; font-size: 1.125rem; color: #1b5e20;">My mom has always said that I got bitten by the creative bug when I was young. I have always loved creating, whether I am making jewelry, painting, scrapbooking, or embroidering! Picking up a paintbrush and getting to work on a creative project always soothes me because it means I can work on something that will bring me joy. A personal story I have with this hobby is that my best friend and I sold crafts at the UMD art sale last spring!</p>
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <img src="images/hobcraftimg.jpg" alt="Crafting project" style="max-width: 500px; width: 100%; height: auto; border-radius: 12px; box-shadow: 0 2px 8px rgba(46, 125, 50, 0.2);">
+                </div>
+            </section>
+
+            <!-- Dancing Section -->
+            <section style="margin-bottom: 3rem; margin-top: 2rem; opacity: 1; visibility: visible; display: block;">
+                <h2 style="font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; color: #2e7d32; margin-bottom: 1rem;">Dancing</h2>
+                <p style="margin-bottom: 1rem; line-height: 1.8; font-size: 1.125rem; color: #1b5e20;">I started Irish dancing when I was eight years old. Since then, I have loved the creativity it has given me. I am Irish, so it has given me a way to connect with my roots. I have traveled to many different states in order to compete. My dream is to one day go to Ireland and dance in the World's competition! My biggest achievement was that I got the solo in a team dance that won the Creative Freestyle dance competition.</p>
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <img src="images/hobdanceimg.jpg" alt="Irish dancing" style="max-width: 400px; width: 100%; height: auto; border-radius: 12px; box-shadow: 0 2px 8px rgba(46, 125, 50, 0.2);">
+                </div>
+            </section>
+
+            <!-- Planting Section -->
+            <section style="margin-bottom: 3rem; margin-top: 2rem; opacity: 1; visibility: visible; display: block;">
+                <h2 style="font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; color: #2e7d32; margin-bottom: 1rem;">Planting</h2>
+                <p style="margin-bottom: 1rem; line-height: 1.8; font-size: 1.125rem; color: #1b5e20;">I have always had a soft spot for plants because they are so delicate, and the fact that they are alive amazes me. I am a person who loves to take care of others, so having plants helps me fill that need. I also think they are beautiful because they can grow in various settings and still thrive. The picture below shows my shamrocks, which I have had for three years. They are my favorite because I got them at my last dance performance from my best friends.</p>
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <img src="images/plantsimg.jpg" alt="Plants" style="max-width: 400px; width: 100%; height: auto; border-radius: 12px; box-shadow: 0 2px 8px rgba(46, 125, 50, 0.2);">
+                </div>
+            </section>
+
+            <!-- Tennis Section -->
+            <section style="margin-bottom: 2rem; margin-top: 2rem; opacity: 1; visibility: visible; display: block;">
+                <h2 style="font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; color: #2e7d32; margin-bottom: 1rem;">Tennis</h2>
+                <p style="margin-bottom: 1rem; line-height: 1.8; font-size: 1.125rem; color: #1b5e20;">I have been playing tennis since seventh grade. My favorite type of game is singles, six games, two out of three sets wins. I love to hit back and forth with my sister, and I have a strong forehand. I enjoy doubles, but I like it when I have full control of the court and can play out the point as I see fit. I once played a game that lasted three hours!</p>
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <img src="images/actualtennisimg.jpg" alt="Tennis" style="max-width: 600px; width: 100%; height: auto; border-radius: 12px; box-shadow: 0 2px 8px rgba(46, 125, 50, 0.2);">
+                </div>
+            </section>
+            
+        </div>
     </main>
 
-    <!-- Footer (same on all pages) -->
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2025 Your Name. All rights reserved.</p>
+        <p>&copy; 2025 Ellie Roeder. All rights reserved.</p>
     </footer>
 
     <script src="js/script.js"></script>
+</body>
+</html>
